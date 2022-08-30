@@ -6,25 +6,40 @@ import DefaultInput from '../../components/DefaultInput';
 import { wp } from '../../utils/responsive';
 import DefaultButton from '../../components/DefaultButton';
 import Container from '../../components/Container';
-
+import { Formik } from 'formik';
+import { loginValidate } from '../../utils/validation';
 const Login = () => {
-  console.log('width', wp(10));
-  const [userMail, setUserMail] = useState('');
   const dispatch = useDispatch();
   const login = () => {
     dispatch(loginApi());
   };
   const orientation = useSelector((state) => state.deviceInfo?.orientation);
+
   return (
-    <Container subContainerStyle={{ justifyContent: 'center' }}>
-      <DefaultInput placeholder="Enter your email" onChangeText={(text) => setUserMail(text)} />
-      <DefaultInput
-        placeholder="Enter password"
-        onChangeText={(text) => setUserMail(text)}
-        secureTextEntry
-      />
-      <DefaultButton label="Login" onPress={login} />
-    </Container>
+    <Formik
+      initialValues={{ name: '', email: '', password: '' }}
+      validate={loginValidate}
+      onSubmit={(values, { setSubmitting }) => {
+        login();
+      }}
+    >
+      {({ values, errors, touch, handleChange, handleBlur, handleSubmit, isValid, dirty }) => (
+        <Container subContainerStyle={{ justifyContent: 'center' }}>
+          <DefaultInput
+            placeholder="Enter  email"
+            onChangeText={handleChange('email')}
+            error={errors?.email}
+          />
+          <DefaultInput
+            placeholder="Enter password"
+            onChangeText={handleChange('password')}
+            error={errors?.password}
+            secureTextEntry
+          />
+          <DefaultButton label="Login" onPress={handleSubmit} isValid={isValid && dirty} />
+        </Container>
+      )}
+    </Formik>
   );
 };
 

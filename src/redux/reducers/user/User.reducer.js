@@ -3,6 +3,8 @@ import { createSlice } from '@reduxjs/toolkit';
 const initialState = {
   token: '',
   user: {},
+  intro: false,
+  userType: null,
 };
 
 const userSlice = createSlice({
@@ -14,6 +16,9 @@ const userSlice = createSlice({
     login: (state, action) => {
       state.token = action.payload.token;
       state.user = action.payload.user;
+    },
+    updateUser: (state, action) => {
+      return (state = { ...state, ...action.payload });
     },
     logOut: (state) => {
       (state.token = ''), (state.user = {});

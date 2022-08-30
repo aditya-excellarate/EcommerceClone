@@ -1,21 +1,29 @@
 import { View, Text, TouchableOpacity } from 'react-native';
 import React from 'react';
-import { fontSize, hp } from '../utils/responsive';
+import { fontSize, hp, wp } from '../utils/responsive';
+import { Colors, theme } from '../assets/colors';
 
-const DefaultButton = ({ onPress, label }) => {
+const DefaultButton = ({ onPress, label, isValid = true, containerStyle }) => {
   return (
     <TouchableOpacity
-      onPress={onPress}
+      onPress={isValid ? onPress : null}
       style={{
-        backgroundColor: 'orange',
-        paddingVertical: hp(3),
-        borderRadius: 5,
+        backgroundColor: theme.primaryBtn,
+        opacity: isValid ? 1 : 0.4,
+        paddingVertical: hp(1.5),
+        borderRadius: 15,
         justifyContent: 'center',
         alignItems: 'center',
         marginVertical: hp(2),
+        width: wp(50),
+        marginLeft: 'auto',
+        marginRight: 'auto',
+        ...containerStyle,
       }}
     >
-      <Text style={{ fontSize: fontSize(22) }}>{label}</Text>
+      <Text style={{ fontSize: fontSize(18), color: '#FFF', textTransform: 'uppercase' }}>
+        {label}
+      </Text>
     </TouchableOpacity>
   );
 };
