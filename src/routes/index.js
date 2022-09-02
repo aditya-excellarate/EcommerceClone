@@ -2,10 +2,10 @@ import React, { useEffect } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import AuthStack from './AuthStack';
-import AppStack from './AppStack';
 import { useDispatch, useSelector } from 'react-redux';
 import { Dimensions } from 'react-native';
 import DeviceInfoSlice from '../redux/reducers/DeviceInfo/DeviceInfo.reducer';
+import AppStack from './AppStack/AppStack';
 
 const Routes = () => {
   const Stack = createNativeStackNavigator();

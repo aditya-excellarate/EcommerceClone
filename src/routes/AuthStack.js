@@ -10,7 +10,6 @@ const AuthStack = () => {
   const Stack = createNativeStackNavigator();
   const intro = useSelector((state) => state?.user?.intro);
   const userType = useSelector((state) => state?.user?.userType);
-  console.log('userType', userType === null);
   return (
     <>
       <Stack.Navigator initialRouteName={AppStrings.APPINTRO}>
