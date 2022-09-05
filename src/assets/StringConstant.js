@@ -8,4 +8,5 @@ export const AppStrings = {
   VIEWPRODUCTS: 'VIEWPRODUCTS',
   PRODUCTLIST: 'PRODUCTLIST',
   MENU: 'MENU',
+  EDITMENU: 'EDITMENU',
 };

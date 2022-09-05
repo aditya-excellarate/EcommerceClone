@@ -1,10 +1,12 @@
 import { createSlice } from '@reduxjs/toolkit';
+import { DummyMenu } from '../../../utils/dummy';
 
 const initialState = {
   token: '',
   user: {},
   intro: false,
   userType: null,
+  menuList: DummyMenu,
 };
 
 const userSlice = createSlice({
@@ -18,7 +20,7 @@ const userSlice = createSlice({
       state.user = action.payload.user;
     },
     updateUser: (state, action) => {
-      return (state = { ...state, ...action.payload });
+      return { ...state, ...action.payload };
     },
     logOut: (state) => {
       (state.token = ''), (state.user = {});
