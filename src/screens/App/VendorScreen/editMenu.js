@@ -1,14 +1,28 @@
-import { StyleSheet, Text, View } from 'react-native';
+import { Keyboard, StyleSheet, Text, View } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import Container from '../../../components/Container';
 import CheckBox from '@react-native-community/checkbox';
 import { hp } from '../../../utils/responsive';
 import { useDispatch, useSelector } from 'react-redux';
 import { updateUser } from '../../../redux/reducers/user/User.actions';
+import DefaultInput from '../../../components/DefaultInput';
 
 const EditMenu = () => {
   const menu = useSelector((state) => state?.user?.menuList);
   const dispatch = useDispatch();
+  const [title, setTitle] = useState('');
+  const onPressAddItem = () => {
+    const duplicateArray = [...menu];
+    duplicateArray.push({
+      id: duplicateArray.length,
+      title: title,
+      lunch: false,
+      dinner: false,
+      breakfast: false,
+    });
+    dispatch(updateUser({ menuList: duplicateArray }));
+    setTitle('');
+  };
 
   const onToggleAvailabilityPress = (id, type) => {
     const duplicateArray = menu?.map((item) => {
@@ -56,7 +70,7 @@ const EditMenu = () => {
             <CheckBox
               disabled={false}
               value={item?.dinner}
-              onValueChange={(newValue) => onToggleAvailabilityPress(item?.id, 'dinner')}
+              onValueChange={() => onToggleAvailabilityPress(item?.id, 'dinner')}
             />
           </View>
         </View>
@@ -71,6 +85,20 @@ const EditMenu = () => {
         {menu?.map((item, index) => (
           <RenderMenuList item={item} index={index} key={item?.id} />
         ))}
+        <View>
+          <DefaultInput
+            onChangeText={(text) => setTitle(text)}
+            placeholder="Other item"
+            value={title}
+            onPress={() => onPressAddItem()}
+            buttonLabel="ADD"
+            disabled={!!!title}
+            onSubmitEditing={() => {
+              Keyboard.dismiss();
+              onPressAddItem();
+            }}
+          />
+        </View>
       </View>
     </Container>
   );

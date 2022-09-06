@@ -13,16 +13,16 @@ const VendorStack = () => {
       <Stack.Screen
         name={AppStrings.HOME}
         component={VendorHome}
-        options={{
-          headerShown: false,
-        }}
+        // options={{
+        //   headerShown: false,
+        // }}
       />
       <Stack.Screen
         name={AppStrings.EDITMENU}
         component={EditMenu}
-        options={{
-          headerShown: false,
-        }}
+        // options={{
+        //   headerShown: false,
+        // }}
       />
     </Stack.Navigator>
   );

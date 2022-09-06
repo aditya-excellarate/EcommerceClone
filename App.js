@@ -22,7 +22,7 @@ import Routes from './src/routes';
 import { Provider } from 'react-redux';
 import { persistor, store } from './src/redux';
 import { PersistGate } from 'redux-persist/integration/react';
-
+import Toast from 'react-native-toast-message';
 const App: () => Node = () => {
   const isDarkMode = useColorScheme() === 'dark';
 
@@ -37,6 +37,7 @@ const App: () => Node = () => {
       <Provider store={store}>
         <PersistGate loading={null} persistor={persistor}>
           <Routes />
+          <Toast />
         </PersistGate>
       </Provider>
     </SafeAreaView>
