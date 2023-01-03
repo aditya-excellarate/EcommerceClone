@@ -6,7 +6,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Dimensions } from 'react-native';
 import DeviceInfoSlice from '../redux/reducers/DeviceInfo/DeviceInfo.reducer';
 import AppStack from './AppStack/AppStack';
-import VendorStack from './VendorStack';
+import VendorStack from './VendorStack/vendorStack';
+// import VendorStack from './VendorStack';
 
 const Routes = () => {
   const Stack = createNativeStackNavigator();
@@ -22,14 +23,14 @@ const Routes = () => {
     });
     return () => subscription?.remove();
   }, []);
-
+  console.log('@@@@toke', user);
   return (
     <NavigationContainer>
       <Stack.Navigator initialRouteName="Auth">
         {user?.token ? (
           <Stack.Screen
             name="App"
-            component={user?.userType ? AppStack : VendorStack}
+            component={user?.userType ? VendorStack : AppStack}
             options={{ headerShown: false }}
           />
         ) : (

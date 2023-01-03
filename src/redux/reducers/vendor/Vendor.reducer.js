@@ -6,8 +6,7 @@ const initialState = {
   user: {},
   intro: false,
   userType: null,
-  menuList: [],
-  vendorList: [],
+  menuList: DummyMenu,
 };
 
 const userSlice = createSlice({

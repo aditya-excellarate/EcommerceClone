@@ -21,13 +21,13 @@ const ChooseUser = ({ navigation }) => {
           onPress={() => setSelectedUser(0)}
           style={[styles.userOption, !selectedUser && { opacity: 1 }]}
         >
-          <Text style={{ color: '#FFF' }}>Vendor</Text>
+          <Text style={{ color: '#FFF' }}>Customer</Text>
         </TouchableOpacity>
         <TouchableOpacity
           onPress={() => setSelectedUser(1)}
           style={[styles.userOption, selectedUser && { opacity: 1 }]}
         >
-          <Text style={{ color: '#FFF' }}>Customer</Text>
+          <Text style={{ color: '#FFF' }}>Vendor</Text>
         </TouchableOpacity>
       </View>
       <DefaultButton

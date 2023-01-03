@@ -1,78 +1,26 @@
 import { Image, Pressable, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import React from 'react';
 import Container from '../../../components/Container';
-import { ImageConstant } from '../../../assets/images';
 import { hp, wp } from '../../../utils/responsive';
 import { AppStrings } from '../../../assets/StringConstant';
-const fastFoods = [
-  {
-    id: 0,
-    title: 'Healthy',
-    image: ImageConstant.BURGER,
-  },
-  {
-    id: 1,
-    title: 'Pizza',
-    image: ImageConstant.BURGER,
-  },
-  {
-    id: 3,
-    title: 'Burger',
-    image: ImageConstant.BURGER,
-  },
-  {
-    id: 4,
-    title: 'Rolls',
-    image: ImageConstant.BURGER,
-  },
-  {
-    id: 5,
-    title: 'Fries',
-    image: ImageConstant.BURGER,
-  },
-  {
-    id: 6,
-    title: 'Chicken',
-    image: ImageConstant.BURGER,
-  },
-  {
-    id: 7,
-    title: 'Home Style',
-    image: ImageConstant.BURGER,
-  },
-  {
-    id: 8,
-    title: 'Chaat',
-    image: ImageConstant.BURGER,
-  },
-];
+import { useDispatch, useSelector } from 'react-redux';
+import { useEffect } from 'react';
+import { fetchMenuItems, fetchVendors } from '../../../redux/reducers/user/User.actions';
 
-const vendorList = [
-  {
-    id: 0,
-    title: 'Rolls express',
-    image: ImageConstant.BURGER,
-    address: 'address A-1 XYZ',
-  },
-  {
-    id: 1,
-    title: 'Crazy Coffee',
-    image: ImageConstant.PIZZA,
-    address: 'address A-1 XYZ',
-  },
-  {
-    id: 2,
-    title: 'Gulab ji chaai',
-    image: ImageConstant.BURGER,
-    address: 'address A-1 XYZ',
-  },
-];
 const HomeScreen = ({ navigation }) => {
+  const dispatch = useDispatch();
+  const vendorList = useSelector((state) => state?.user?.vendorList);
+  const fastFoods = useSelector((state) => state.user.menuList);
+  useEffect(() => {
+    dispatch(fetchMenuItems());
+    dispatch(fetchVendors());
+  }, []);
+
   const RenderFastFoodCategories = ({ item }) => {
     return (
       <View key={item?.id} style={{ padding: wp(1), alignItems: 'center' }}>
         <Image
-          source={item?.image}
+          source={{ uri: `${AppStrings.baseUrl}${item?.image}` }}
           style={{ width: wp(20), height: wp(20), resizeMode: 'contain' }}
         />
         <Text>{item?.title}</Text>
@@ -95,12 +43,15 @@ const HomeScreen = ({ navigation }) => {
         <View>
           {vendorList?.map((item) => (
             <TouchableOpacity
-              onPress={() => navigation.navigate(AppStrings.MENU)}
+              onPress={() => navigation.navigate(AppStrings.MENU, item)}
               style={{ flexDirection: 'row' }}
             >
-              <Image source={item?.image} style={styles.vendorImage} />
+              <Image
+                source={{ uri: `${AppStrings.baseUrl}${item?.image}` }}
+                style={styles.vendorImage}
+              />
               <View>
-                <Text style={styles.vendorTitle}>{item?.title}</Text>
+                <Text style={styles.vendorTitle}>{item?.name}</Text>
                 <Text style={styles.vendorAddress}>{item?.address}</Text>
               </View>
             </TouchableOpacity>

@@ -3,12 +3,14 @@ import React, { useEffect, useState } from 'react';
 import Container from '../../../components/Container';
 import { AppStrings } from '../../../assets/StringConstant';
 import { hp } from '../../../utils/responsive';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchMenu } from '../../../redux/reducers/user/User.actions';
 
 const VendorHome = ({ navigation }) => {
   const MenuList = useSelector((state) => state?.user?.menuList);
+  const user = useSelector((state) => state?.user);
   const [currentMenu, setCurrentMenu] = useState([]);
-
+  const dispatch = useDispatch();
   const fetchTime = () => {
     const date = new Date();
     const now = date.getHours() * 60 + date.getMinutes();
@@ -41,6 +43,10 @@ const VendorHome = ({ navigation }) => {
     filterMenu();
   }, [MenuList]);
 
+  useEffect(() => {
+    dispatch(fetchMenu({ _id: user?.user?._id }));
+  }, []);
+
   return (
     <Container>
       <View>
@@ -51,7 +57,7 @@ const VendorHome = ({ navigation }) => {
           </Pressable>
         </View>
         {currentMenu?.map((item) => (
-          <RenderMenuList item={item} key={item?.id} />
+          <RenderMenuList item={item} key={item?._id} />
         ))}
       </View>
       {!!!currentMenu?.length && (

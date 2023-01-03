@@ -1,14 +1,16 @@
-import { Keyboard, StyleSheet, Text, View } from 'react-native';
+import { Keyboard, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import Container from '../../../components/Container';
 import CheckBox from '@react-native-community/checkbox';
 import { hp } from '../../../utils/responsive';
 import { useDispatch, useSelector } from 'react-redux';
-import { updateUser } from '../../../redux/reducers/user/User.actions';
+import { addMenu } from '../../../redux/reducers/user/User.actions';
 import DefaultInput from '../../../components/DefaultInput';
+import { AppStrings } from '../../../assets/StringConstant';
 
-const EditMenu = () => {
+const EditMenu = ({ navigation }) => {
   const menu = useSelector((state) => state?.user?.menuList);
+  const user = useSelector((state) => state?.user);
   const dispatch = useDispatch();
   const [title, setTitle] = useState('');
   const onPressAddItem = () => {
@@ -20,29 +22,35 @@ const EditMenu = () => {
       dinner: false,
       breakfast: false,
     });
-    dispatch(updateUser({ menuList: duplicateArray }));
+    dispatch(
+      addMenu({
+        _id: user?.user?._id,
+        menu: [{ title: title, lunch: false, dinner: false, breakfast: false }],
+      })
+    );
     setTitle('');
   };
 
   const onToggleAvailabilityPress = (id, type) => {
     const duplicateArray = menu?.map((item) => {
-      if (item.id === id) {
+      if (item._id === id) {
         return { ...item, [type]: !item[type] };
       }
       return item;
     });
-    dispatch(updateUser({ menuList: duplicateArray }));
+    dispatch(addMenu({ _id: user?.user?._id, menu: duplicateArray }));
   };
 
   const RenderMenuList = ({ item, index }) => {
     return (
-      <View
+      <TouchableOpacity
         style={{
           marginBottom: hp(1),
           paddingVertical: hp(1),
           borderColor: 'grey',
           borderBottomWidth: 1,
         }}
+        onPress={() => navigation.navigate(AppStrings.EDITITEM, { ...item })}
       >
         <Text style={{ color: '#000', fontWeight: 'bold', marginBottom: hp(0.5) }}>
           {item?.title}
@@ -53,7 +61,7 @@ const EditMenu = () => {
             <CheckBox
               disabled={false}
               value={item?.breakfast}
-              onValueChange={(newValue) => onToggleAvailabilityPress(item?.id, 'breakfast')}
+              onValueChange={(newValue) => onToggleAvailabilityPress(item?._id, 'breakfast')}
             />
           </View>
 
@@ -62,7 +70,7 @@ const EditMenu = () => {
             <CheckBox
               disabled={false}
               value={item?.lunch}
-              onValueChange={(newValue) => onToggleAvailabilityPress(item?.id, 'lunch')}
+              onValueChange={() => onToggleAvailabilityPress(item?._id, 'lunch')}
             />
           </View>
           <View>
@@ -70,11 +78,11 @@ const EditMenu = () => {
             <CheckBox
               disabled={false}
               value={item?.dinner}
-              onValueChange={() => onToggleAvailabilityPress(item?.id, 'dinner')}
+              onValueChange={() => onToggleAvailabilityPress(item?._id, 'dinner')}
             />
           </View>
         </View>
-      </View>
+      </TouchableOpacity>
     );
   };
   useEffect(() => {}, [menu]);
@@ -82,23 +90,15 @@ const EditMenu = () => {
   return (
     <Container>
       <View>
+        <TouchableOpacity
+          style={{ alignItems: 'flex-end' }}
+          onPress={() => navigation.navigate(AppStrings.EDITITEM)}
+        >
+          <Text>Add Item</Text>
+        </TouchableOpacity>
         {menu?.map((item, index) => (
-          <RenderMenuList item={item} index={index} key={item?.id} />
+          <RenderMenuList item={item} index={index} key={item?._id} />
         ))}
-        <View>
-          <DefaultInput
-            onChangeText={(text) => setTitle(text)}
-            placeholder="Other item"
-            value={title}
-            onPress={() => onPressAddItem()}
-            buttonLabel="ADD"
-            disabled={!!!title}
-            onSubmitEditing={() => {
-              Keyboard.dismiss();
-              onPressAddItem();
-            }}
-          />
-        </View>
       </View>
     </Container>
   );

@@ -9,4 +9,9 @@ export const AppStrings = {
   PRODUCTLIST: 'PRODUCTLIST',
   MENU: 'MENU',
   EDITMENU: 'EDITMENU',
+  EDITITEM: 'EDITITEM',
+
+  //env
+  baseUrl: 'http://10.0.2.2:9000/',
+  local: 'http://localhost:9000/',
 };
